@@ -4,7 +4,7 @@ import React from "react";
 import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
 
 interface ProgressRingProps {
-  progress: number;
+  progress: number | undefined;
 }
 
 export const ProgressRingSection: React.FC<ProgressRingProps> = ({
@@ -13,8 +13,8 @@ export const ProgressRingSection: React.FC<ProgressRingProps> = ({
   const data = [{ value: progress }];
 
   return (
-    <section className="w-[200px] h-[200px] bg-[#FBFBFB]">
-      <h2 className="text-xl text-[#282D30]">Score</h2>
+    <section className="relative flex flex-col  w-[250px] h-[250px] bg-[#FBFBFB]">
+      <h2 className=" text-[#282D30] absolute left-5 top-5">Score</h2>
       <div className="flex items-center justify-center p-4">
         <RadialBarChart
           width={200}

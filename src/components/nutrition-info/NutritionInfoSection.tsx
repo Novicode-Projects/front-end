@@ -6,10 +6,10 @@ import appleIcon from "../../assets/icons/nutrition-info/apple.png";
 import cheeseburgerIcon from "../../assets/icons/nutrition-info/cheeseburger.png";
 
 type NutritionInfoSectionProps = {
-  calorieCount: number;
-  proteinCount: number;
-  carbohydrateCount: number;
-  lipidCount: number;
+  calorieCount: number | undefined;
+  proteinCount: number | undefined;
+  carbohydrateCount: number | undefined;
+  lipidCount: number | undefined;
 };
 
 export const NutritionInfoSection = ({
@@ -19,7 +19,7 @@ export const NutritionInfoSection = ({
   lipidCount,
 }: NutritionInfoSectionProps) => {
   return (
-    <section className="flex flex-col gap-12">
+    <section className="flex flex-col justify-between gap-12">
       <NutritionInfoCard
         title="Calories"
         value={`${calorieCount}kCal`}

@@ -3,12 +3,12 @@ import swimmerIcon from "../assets/icons/swimmer-icon.png";
 import cyclistIcon from "../assets/icons/cyclist-icon.png";
 import dumbbellIcon from "../assets/icons/dumbbell-icon.png";
 
-export const Sidebar = () => {
-  const currentYear = new Date().getFullYear();
+import copyright from "../assets/copyright.png";
 
+export const Sidebar = () => {
   return (
-    <div className="flex flex-col w-32 h-full min-h-screen bg-secondary">
-      <ul className="flex flex-col items-center justify-between h-full mt-44">
+    <div className="flex flex-col w-[300px] h-screen bg-secondary ">
+      <ul className="flex flex-col items-center justify-between mt-44">
         <li className="p-4 font-bold text-tertiary">
           <img
             src={meditationIcon}
@@ -39,10 +39,8 @@ export const Sidebar = () => {
         </li>
       </ul>
 
-      <div className="mt-44">
-        <p className="font-light text-tertiary">
-          Copyright, SportSee {currentYear}
-        </p>
+      <div className="flex justify-center mt-20">
+        <img src={copyright} alt="CopyRight" />
       </div>
     </div>
   );

@@ -130,7 +130,7 @@ function App() {
             <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col">
                 <UserActivitySection data={currentUserActivity?.sessions} />
-                <div className="flex justify-center w-full gap-10 mt-20">
+                <div className="flex justify-center w-full gap-10 mt-28">
                   <AverageSessionSection
                     sessions={currentUserAverageSessions?.sessions}
                   />

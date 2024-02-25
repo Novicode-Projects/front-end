@@ -36,11 +36,18 @@ type UserActivitySectionProps = {
 export const UserActivitySection = ({ data }: UserActivitySectionProps) => {
   const dataWithIndex = data.map((item, index) => ({
     ...item,
-    index: index + 1, // Commencez l'indexation à 1 ou ce que vous préférez
+    index: index + 1,
   }));
 
   return (
-    <section className="h-[200px] mt-4">
+    <section className="h-[200px] bg-[#FBFBFB] p-4">
+      <div className="flex justify-between mb-4">
+        <h2 className="font-normal  text-secondary">Activité quotidienne</h2>
+        <div className="flex gap-10">
+          <p className="text-secondary">Poids (kg)</p>
+          <p className="text-secondary">Calories brûlées (kCal)</p>
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={dataWithIndex}>
           <CartesianGrid strokeDasharray="3 3" />

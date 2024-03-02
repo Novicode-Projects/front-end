@@ -24,7 +24,7 @@ import { RadarChartComponent } from "./components/radar-chart/RadarChartComponen
 import { Sidebar } from "./components/Sidebar";
 
 function App() {
-  const [userId, setUserId] = useState<number>(18);
+  const [userId, setUserId] = useState<number>(12);
 
   const [currentUser, setCurrentUser] = useState<UserMainData | undefined>(
     undefined
@@ -40,7 +40,6 @@ function App() {
     useState<UserPerformance | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,32 +69,34 @@ function App() {
         setCurrentUserAverageSessions(averageSessionsData.data);
         setCurrentUserPerformance(performanceData.data);
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
-        setError("Failed to fetch user data");
+        const currentUserData: UserMainData = USER_MAIN_DATA[0];
+
+        const currentUserActivity: UserActivity = USER_ACTIVITY.find(
+          (activity: UserActivity) => activity.userId === currentUserData?.id
+        ) as UserActivity;
+
+        const currentUserAverageSessions: UserAverageSessions =
+          USER_AVERAGE_SESSIONS.find(
+            (averageSession: UserAverageSessions) =>
+              averageSession.userId === currentUserData.id
+          ) as UserAverageSessions;
+
+        const currentUserPerformance: UserPerformance = USER_PERFORMANCE.find(
+          (performance: UserPerformance) =>
+            performance.userId === currentUserData.id
+        ) as UserPerformance;
+
+        setCurrentUser(currentUserData);
+        setCurrentUserActivity(currentUserActivity);
+        setCurrentUserAverageSessions(currentUserAverageSessions);
+        setCurrentUserPerformance(currentUserPerformance);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [userId]);
-
-  /*
-  const currentUserActivity: UserActivity = USER_ACTIVITY.find(
-    (activity: UserActivity) => activity.userId === currentUser.id
-  ) as UserActivity;*/
-
-  /*
-  const currentUserAverageSessions: UserAverageSessions =
-    USER_AVERAGE_SESSIONS.find(
-      (averageSession: UserAverageSessions) =>
-        averageSession.userId === currentUser.id
-    ) as UserAverageSessions;*/
-
-  /*
-  const currentUserPerformance: UserPerformance = USER_PERFORMANCE.find(
-    (performance: UserPerformance) => performance.userId === currentUser.id
-  ) as UserPerformance;*/
+  }, [userId, currentUser?.id]);
 
   const transformedData =
     currentUserPerformance?.data?.map((dataPoint) => ({
@@ -105,9 +106,6 @@ function App() {
     })) || [];
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  console.log(currentUserActivity?.sessions);
 
   return (
     <>
@@ -155,5 +153,3 @@ function App() {
 }
 
 export default App;
-
-// <UserPerformanceSection />

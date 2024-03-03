@@ -108,12 +108,12 @@ function App() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <>
+    <div className="relative w-full">
       <Header />
       <main className="flex h-screen">
         <Sidebar />
 
-        <div className="flex flex-col px-16">
+        <div className="flex flex-col lg:items-center xl:px-16">
           <div className="flex flex-col w-full pt-28 gap-7">
             <h1 className="text-3xl font-semibold text-secondary">
               Bonjour
@@ -124,11 +124,11 @@ function App() {
             <p>Félicitation ! Vous avez explosé vos objectifs hier 👏</p>
           </div>
 
-          <div className="flex w-full gap-48 mt-4 justify-evenly">
+          <div className="flex w-full gap-48 mt-4 xl:flex-row lg:flex-col lg:items-center justify-evenly">
             <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col">
                 <UserActivitySection data={currentUserActivity?.sessions} />
-                <div className="flex justify-center w-full gap-10 mt-28">
+                <div className="flex justify-center w-full gap-10 xl:flex-row lg:flex-col lg:items-center mt-28">
                   <AverageSessionSection
                     sessions={currentUserAverageSessions?.sessions}
                   />
@@ -148,7 +148,7 @@ function App() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

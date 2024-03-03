@@ -7,7 +7,7 @@ import copyright from "../assets/copyright.png";
 
 export const Sidebar = () => {
   return (
-    <div className="flex flex-col w-[300px] h-screen bg-secondary ">
+    <div className="flex flex-col w-[300px] h-screen bg-secondary lg:hidden xl:flex">
       <ul className="flex flex-col items-center justify-between mt-44">
         <li className="p-4 font-bold text-tertiary">
           <img

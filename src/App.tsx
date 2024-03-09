@@ -22,9 +22,14 @@ import { AverageSessionSection } from "./components/average-session/AverageSessi
 import { ProgressRingSection } from "./components/progress-ring/ProgressRingSection";
 import { RadarChartComponent } from "./components/radar-chart/RadarChartComponent";
 import { Sidebar } from "./components/Sidebar";
+import {
+  dataWithIndexForCurrentUserActivity,
+  fetchData,
+  transformedDataForCurrentUserPerformance,
+} from "./service";
 
 function App() {
-  const [userId, setUserId] = useState<number>(12);
+  const [userId, setUserId] = useState<number>(18);
 
   const [currentUser, setCurrentUser] = useState<UserMainData | undefined>(
     undefined
@@ -42,45 +47,28 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    setLoading(true);
 
-      try {
-        const urls = [
-          `http://localhost:3000/user/${userId}`,
-          `http://localhost:3000/user/${userId}/activity`,
-          `http://localhost:3000/user/${userId}/average-sessions`,
-          `http://localhost:3000/user/${userId}/performance`,
-        ];
-
-        const responses = await Promise.all(urls.map((url) => fetch(url)));
-        const dataPromises = responses.map((response) => {
-          if (!response.ok) {
-            throw new Error(`Failed to fetch: ${response.statusText}`);
-          }
-          return response.json();
-        });
-
+    fetchData(userId)
+      .then((data) => {
         const [userData, activityData, averageSessionsData, performanceData] =
-          await Promise.all(dataPromises);
+          data;
 
         setCurrentUser(userData.data);
         setCurrentUserActivity(activityData.data);
         setCurrentUserAverageSessions(averageSessionsData.data);
         setCurrentUserPerformance(performanceData.data);
-      } catch (error) {
+      })
+      .catch((error: any) => {
         const currentUserData: UserMainData = USER_MAIN_DATA[0];
-
         const currentUserActivity: UserActivity = USER_ACTIVITY.find(
           (activity: UserActivity) => activity.userId === currentUserData?.id
         ) as UserActivity;
-
         const currentUserAverageSessions: UserAverageSessions =
           USER_AVERAGE_SESSIONS.find(
             (averageSession: UserAverageSessions) =>
               averageSession.userId === currentUserData.id
           ) as UserAverageSessions;
-
         const currentUserPerformance: UserPerformance = USER_PERFORMANCE.find(
           (performance: UserPerformance) =>
             performance.userId === currentUserData.id
@@ -90,22 +78,19 @@ function App() {
         setCurrentUserActivity(currentUserActivity);
         setCurrentUserAverageSessions(currentUserAverageSessions);
         setCurrentUserPerformance(currentUserPerformance);
-      } finally {
-        setLoading(false);
-      }
-    };
+      });
 
-    fetchData();
-  }, [userId, currentUser?.id]);
-
-  const transformedData =
-    currentUserPerformance?.data?.map((dataPoint) => ({
-      subject: currentUserPerformance.kind[dataPoint.kind],
-      A: dataPoint.value,
-      fullMark: 100,
-    })) || [];
+    setLoading(false);
+  }, [userId]);
 
   if (loading) return <div>Loading...</div>;
+
+  const dataWithIndex =
+    dataWithIndexForCurrentUserActivity(currentUserActivity);
+
+  const transformedData = transformedDataForCurrentUserPerformance(
+    currentUserPerformance
+  );
 
   return (
     <div className="relative w-full">
@@ -127,7 +112,7 @@ function App() {
           <div className="flex w-full gap-48 mt-4 xl:flex-row lg:flex-col lg:items-center justify-evenly">
             <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col">
-                <UserActivitySection data={currentUserActivity?.sessions} />
+                <UserActivitySection data={dataWithIndex} />
                 <div className="flex justify-center w-full gap-10 xl:flex-row lg:flex-col lg:items-center mt-28">
                   <AverageSessionSection
                     sessions={currentUserAverageSessions?.sessions}

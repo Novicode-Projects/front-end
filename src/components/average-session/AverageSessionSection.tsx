@@ -1,24 +1,8 @@
 import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { formatXAxis } from "../../service";
+import { CustomTooltip } from "./CustomTooltip";
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active) {
-    return (
-      <div className="p-2 text-sm bg-white shadow-lg">
-        <p>{payload[0]?.value} min</p>
-      </div>
-    );
-  }
-
-  return null;
-};
-
-export const AverageSessionSection = ({ sessions }) => {
-  const daysOfWeek = ["L", "M", "M", "J", "V", "S", "D"];
-
-  const formatXAxis = (tickItem) => {
-    return daysOfWeek[tickItem - 1];
-  };
-
+export const AverageSessionSection = ({ sessions }: any) => {
   return (
     <section className="w-[250px] h-[250px]">
       <div className="flex flex-col justify-between w-full h-full p-4 bg-red-500">
